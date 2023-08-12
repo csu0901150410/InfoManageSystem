@@ -42,6 +42,8 @@ void test_info();
 bool create_account_list(AccountList *al, FILE *fp);
 void destroy_account_list(AccountList *al);
 void print_account_list(AccountList *al);
-void account_init(char *filename, AccountList *al);
+void init_account_list(char *filename, AccountList *al);
+bool find_account_list(const AccountList *al, const AccountInfo *ai);
+AccountInfo account_wrap(const char *name, const char *pwd);
 
 #endif // _ACCOUNT_INFO_H_

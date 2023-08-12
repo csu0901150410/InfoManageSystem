@@ -44,6 +44,25 @@ void account_print(AccountInfo *info)
     LOG("Account : id-%d name-%s pwd-%s type-%d", info->id, info->name, info->pwd, info->type);
 }
 
+// 账户比对，暂时通过name和pwd
+bool account_compare(const AccountInfo *src, const AccountInfo *dst)
+{
+    if (strncmp(src->name, dst->name, MAX_ACCOUNT_STRLEN))
+        return false;
+    if (strncmp(src->pwd, dst->pwd, MAX_ACCOUNT_STRLEN))
+        return false;
+    return true;
+}
+
+// 账户封装
+AccountInfo account_wrap(const char *name, const char *pwd)
+{
+    AccountInfo account;
+    strncpy(account.name, name, MAX_ACCOUNT_STRLEN);
+    strncpy(account.pwd, pwd, MAX_ACCOUNT_STRLEN);
+    return account;
+}
+
 // 测试多账号写入
 void test_save_account_info()
 {
@@ -84,6 +103,7 @@ void test_read_account_info()
     fclose(fp);
 }
 
+// only run for test
 void test_info()
 {
     LOG("hello");
@@ -144,12 +164,9 @@ void destroy_account_list(AccountList *al)
     if (NULL == al || NULL == al->ptr)
         return;
 
-    for (size_t i = 0; i < al->num; ++i)
-    {
-        AccountInfo *curr = al->ptr + i;
-        free(curr);
-        curr = NULL;
-    }
+    free(al->ptr);
+    al->ptr = NULL;
+    al->num = 0;
 }
 
 /**
@@ -170,11 +187,30 @@ void print_account_list(AccountList *al)
 }
 
 /**
+ * @brief 搜索账户列表
+ * 
+ * @param al 账户列表指针
+ * @param ai 账户指针
+ * @return true 给定账户存在于账户列表中
+ * @return false 给定账户不在账户列表中
+ */
+bool find_account_list(const AccountList *al, const AccountInfo *ai)
+{
+    for (size_t i = 0; i < al->num; ++i)
+    {
+        AccountInfo account = al->ptr[i];
+        if (account_compare(&account, ai))
+            return true;
+    }
+    return false;
+}
+
+/**
  * @brief 账户信息初始化
  * 
  * @param filename 保存账户信息的文件路径
  */
-void account_init(char *filename, AccountList *al)
+void init_account_list(char *filename, AccountList *al)
 {
     // 创建或者打开账户信息文件，有则打开，无则创建
 	FILE* fp = fopen(filename, "a+");
