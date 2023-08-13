@@ -3,6 +3,6 @@
 
 #include "system_control.h"
 
-void login(SystemCtl *sysctl);
+bool login(SystemCtl *sysctl);
 
 #endif // _LOGIN_H_

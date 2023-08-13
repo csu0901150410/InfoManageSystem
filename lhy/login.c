@@ -2,23 +2,33 @@
 
 #include "utils.h"
 
-void login(SystemCtl *sysctl)
+/**
+ * @brief 登录函数
+ * 
+ * @param sysctl 系统变量指针
+ * @return true 登录成功
+ * @return false 登录失败
+ */
+bool login(SystemCtl *sysctl)
 {
-    while (1)
-    {
-        char name[MAX_ACCOUNT_STRLEN + 1];// 账号名
-        char pwd[MAX_ACCOUNT_STRLEN + 1];// 账户密码
-        LOGN("\ninput your name : ");
-        scanf("%s", name);
-        LOGN("input your pwd : ");
-        scanf("%s", pwd);
+    char name[MAX_ACCOUNT_STRLEN + 1];// 账号名
+    char pwd[MAX_ACCOUNT_STRLEN + 1];// 账户密码
 
-        AccountInfo account = account_wrap(name, pwd);
-        if (find_account_list(&sysctl->accountList, &account))
-        {
-            sysctl->bLogin = true;
-            LOGN("Login success\n");
-            break;
-        }
+    // LOGN("\ninput your name : ");
+    // scanf("%s", name);
+    // LOGN("input your pwd : ");
+    // scanf("%s", pwd);
+
+    LOGN("\ninput your name : ");
+    gets(name);
+    LOGN("input your pwd : ");
+    gets(pwd);
+
+    AccountInfo account = account_wrap(name, pwd);
+    if (find_account_list(&sysctl->accountList, &account))
+    {
+        sysctl->bLogin = true;
+        return true;
     }
+    return false;
 }
