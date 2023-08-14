@@ -8,10 +8,12 @@
 typedef enum
 {
     kNone = 0,
-    kEnter,
-    kCls,
-    kExit,
-    kQuit,
+    kEnter,// 单独回车
+    kCls,// 清屏
+    kExit,// 退出登录
+    kQuit,// 退出系统
+
+    kInvalid,
 } CmdType;
 
 typedef struct
