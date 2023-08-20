@@ -39,7 +39,7 @@ void account_prinf(AccountInfo *info)
  * @brief 账户名称、密码匹配
 */
 
-bool account_campare(const AccountInfo *infoA,const AccountInfo *infoB);
+bool account_campare(const AccountInfo *infoA,const AccountInfo *infoB)
 {
     if(strncmp(infoA->name,infoB->name,MAX_ACCOUNT_STRLEN))
         return false;
