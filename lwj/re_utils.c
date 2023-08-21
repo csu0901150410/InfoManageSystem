@@ -9,7 +9,5 @@ void LOG(const char* value,...)
     va_start(args,value);//arg指向可变参数的第一个参数
     vprintf(value,args);//输出
     va_end(args);
-    
-    printf("/n");
 
 }

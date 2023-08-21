@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <stdbool.h>
 #include "re_account_info.h"
 #include "re_utils.h"
 bool save_account(AccountInfo *info,FILE *fp)
@@ -22,7 +24,7 @@ bool read_account(AccountInfo *info,FILE *fp)
         return false;
     
     size_t num = fread(info,sizeof(AccountInfo),1,fp);
-     return (1 == num);//
+     return (1 == num);
 }
 
 
@@ -41,9 +43,11 @@ void account_prinf(AccountInfo *info)
 
 bool account_campare(const AccountInfo *infoA,const AccountInfo *infoB)
 {
+    //AccountInfo
+
     if(strncmp(infoA->name,infoB->name,MAX_ACCOUNT_STRLEN))
         return false;
-    if (strncmp(infoA->pwd,infoB->pwd,MAX_ACCOUNT_STRLEN))
+    if(strncmp(infoA->pwd,infoB->pwd,MAX_ACCOUNT_STRLEN))
         return false;
 
     return true;
@@ -56,7 +60,7 @@ AccountInfo account_warp(const char *name,const char *pwd)
 {
     AccountInfo account;//账号结构体
     strncpy(account.name,name,MAX_ACCOUNT_STRLEN);//复制
-    strncpy(account.pwd,pwd,MAX_ACCOUNT_STRLEN);
+    strncpy(account.name,pwd,MAX_ACCOUNT_STRLEN);
     return account;
 }
 
@@ -76,7 +80,7 @@ bool creat_accountlist(AccountList *list,FILE *fp)
     if(info == NULL)
      return false;
    
-   AccountInfo* curr=info;//指向指针的指针
+   AccountInfo* curr=info;
 
    rewind(fp);//文件内部的位置指针指向从文件的开头
    while(1)//遍历
@@ -103,7 +107,6 @@ void init_account_info(char *filename,AccountList *list)
        return ;
     
     //文件指针fp的总大小
-    rewind(fp);
     fseek(fp,0,SEEK_END);
     size_t size=ftell(fp);
 
@@ -119,6 +122,7 @@ void init_account_info(char *filename,AccountList *list)
     }
      //将初始化的账号信息放入账号列表
      creat_accountlist(list,fp);
+     fclose(fp);
 
 }
 /**
@@ -131,9 +135,9 @@ void init_account_info(char *filename,AccountList *list)
 */
 bool find_account_list(const AccountList *list,const AccountInfo *acc)
 {
-    for(size_t i=0;i<list->num;i++){
-        AccountInfo account = list->info[i];
-        if(account_campare(acc,&account))
+    for(size_t i=0;i<list->num;++i){
+        AccountInfo *account = list->info + i;
+        if(account_campare(account,acc))
             return true;
     }
       return false;

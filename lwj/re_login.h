@@ -1,6 +1,6 @@
 #ifndef _RE_LOGIN_H
 #define _RE_LOGIN_H
+#include "re_system_control.h"
 
-void login()
-{}
+bool login(SystemCtl *systemctl);
 #endif

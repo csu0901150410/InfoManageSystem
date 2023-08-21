@@ -8,11 +8,11 @@ typedef struct
     bool blogin;//是否登录
     AccountInfo login_info;//当前登录账户
     AccountList list;//账户
-
+        
     char *accountInfoFilename;//账密信息文件路径
-
-
 }SystemCtl;
+
+void system_init(SystemCtl *systemctl);
 
 
 

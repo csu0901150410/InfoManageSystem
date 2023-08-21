@@ -29,6 +29,10 @@ typedef struct
     int num; 
 }AccountList;
 
+AccountInfo account_warp(const char *name,const char *pwd);
+bool creat_accountlist(AccountList *list,FILE *fp);
+void init_account_info(char *filename,AccountList *list);
+bool find_account_list(const AccountList *list,const AccountInfo *acc);
 
 
 #endif
