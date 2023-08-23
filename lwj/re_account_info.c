@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <malloc.h>
 
 #include <stdbool.h>
 #include "re_account_info.h"
@@ -59,7 +61,7 @@ bool account_campare(const AccountInfo *infoA,const AccountInfo *infoB)
 AccountInfo account_warp(const char *name,const char *pwd)
 {
     AccountInfo account;//账号结构体
-    strncpy(account.name,name,MAX_ACCOUNT_STRLEN);//复制
+    strncpy(account.name,name,MAX_ACCOUNT_STRLEN);//复制,name复制到account.name
     strncpy(account.name,pwd,MAX_ACCOUNT_STRLEN);
     return account;
 }
@@ -67,7 +69,7 @@ AccountInfo account_warp(const char *name,const char *pwd)
 /**
  * @brief 创建账号列表
 */
-bool creat_accountlist(AccountList *list,FILE *fp)
+bool creat_accountlist(AccountList_Node *list,FILE *fp)
 {
     rewind(fp);//文件内部的位置指针重新指向一个流(数据流/文件)的开头
     fseek(fp,0,SEEK_END);//将文件指针定位到末尾
@@ -100,7 +102,7 @@ bool creat_accountlist(AccountList *list,FILE *fp)
  * 
  * @param 
 */
-void init_account_info(char *filename,AccountList *list)
+void init_account_list(char *filename,AccountList_Node *list)
 {
     FILE* fp=fopen(filename,"a+");//“a+”----有则打开 无则创建
     if(NULL==fp)
@@ -133,7 +135,7 @@ void init_account_info(char *filename,AccountList *list)
  * @return true 给定账号在账号列表中
  * @return  false 给定账号不在账号列表中
 */
-bool find_account_list(const AccountList *list,const AccountInfo *acc)
+bool find_account_list(const AccountList_Node *list,const AccountInfo *acc)
 {
     for(size_t i=0;i<list->num;++i){
         AccountInfo *account = list->info + i;
@@ -142,3 +144,64 @@ bool find_account_list(const AccountList *list,const AccountInfo *acc)
     }
       return false;
 }
+
+/**
+ * @brief 创建节点
+ * 返回值：指针，指向我们本函数新创建的一个节点的首地址
+*/
+pNode creatlist()
+{
+   pNode head = (pNode) malloc(sizeof(AccountList_Node));
+   if(NULL==head)
+    {           printf("malloc error\n");
+                return NULL;   
+    }
+
+ 
+    FILE *fp=fopen("accountinfo.txt","r+");
+     if(NULL==fp)
+       return ;
+
+    pNode curr=head;//  取链表的入口
+    while(1)
+    {       //临时节点
+        pNode temp=(pNode)malloc(sizeof(AccountList_Node));
+        if(NULL==temp)
+            exit(-1);//节点分配空间失败退出      
+        
+/*fscanf（fp，“%s%s”，temp->info->name，temp->info->pass）的返回值是成功匹配并成功读取的参数个数。
+    在这里 如果成功读取了两个字符串，返回值就是2.不等于2----录入完毕*/
+        if(2!=fscanf(fp,"%s%s",temp->info->name,temp->info->pwd))
+        {  free(temp);
+            break;
+        }
+        curr->next=temp;
+        curr=temp;
+        curr->next=NULL;
+    }
+    return head;
+}
+
+//使用链表初始化
+void ini_account(pNode head)
+{
+    pNode temp =head->next;
+    if(!temp)
+    {
+        temp= (pNode)malloc(sizeof(AccountList_Node));
+        head->next=temp;
+          
+        strcpy(temp->info->name,"root",);
+        strcpy(temp->info->pwd,"123456"); 
+    }
+  strcpy(temp->info->name,"root",);
+  strcpy(temp->info->pwd,"123456");
+    temp->next=NULL;
+}
+
+
+
+
+
+
+

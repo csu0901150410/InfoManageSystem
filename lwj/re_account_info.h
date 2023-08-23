@@ -20,19 +20,24 @@ typedef struct
     char name[ MAX_ACCOUNT_STRLEN+1];
     char pwd[ MAX_ACCOUNT_STRLEN+1];
     AccountType type;
-}AccountInfo;
+    }AccountInfo;
 
-/*账号列表结构*/
-typedef struct 
+/*账号列表结构   链表*/
+typedef struct AccountList_Node
 {
     AccountInfo *info;
     int num; 
-}AccountList;
+    struct AccountList_Node *next;
+
+}AccountList_Node,*pNode;
+pNode head=NULL;//头节点
 
 AccountInfo account_warp(const char *name,const char *pwd);
-bool creat_accountlist(AccountList *list,FILE *fp);
-void init_account_info(char *filename,AccountList *list);
-bool find_account_list(const AccountList *list,const AccountInfo *acc);
+bool creat_accountlist(AccountList_Node *list,FILE *fp);
+void init_account_info(char *filename,AccountList_Node *list);
+bool find_account_list(const AccountList_Node *list,const AccountInfo *acc);
+
+
 
 
 #endif
