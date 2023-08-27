@@ -46,6 +46,11 @@ bool sysctl_logout(SystemCtl *sysctl)
     return true;
 }
 
+void sysctl_adduser(SystemCtl *sysctl)
+{
+    
+}
+
 void sysctl_deinit(SystemCtl *sysctl)
 {
     destroy_account_list(&sysctl->accountList);
@@ -67,6 +72,8 @@ void sysctl_cmd_parse(SystemCtl *sysctl)
         sysctl->cmdEvent = kExit;
     else if (0 == strncmp("quit", cmd, MAX_CMD_STRLEN))
         sysctl->cmdEvent = kQuit;
+    else if (0 == strncmp("adduser", cmd, MAX_CMD_STRLEN))
+        sysctl->cmdEvent = kAddUser;
     else
         sysctl->cmdEvent = kInvalid;
 }
@@ -100,6 +107,12 @@ void sysctl_handle_event(SystemCtl *sysctl)
         sysctl_event_reset(sysctl);
         break;
 
+    case kAddUser:
+        // system("cls");
+        // sysctl_logout(sysctl);
+        sysctl_event_reset(sysctl);
+        break;
+
     case kInvalid:
     default:
         LOG("\ncommand not found");
@@ -110,13 +123,31 @@ void sysctl_handle_event(SystemCtl *sysctl)
 
 void sysctl_polling(SystemCtl *sysctl)
 {
-    while (1)
+    // while (1)
+    // {
+    //     if (!sysctl_login(sysctl))
+    //         continue;
+
+    //     sysctl_cmd_parse(sysctl);
+
+    //     sysctl_handle_event(sysctl);
+    // }
+
+    Shell shell;
+    ShellArgs args;
+    int argNums;
+    int status = 1;
+
+    shell_init(&shell);
+
+    do
     {
-        if (!sysctl_login(sysctl))
-            continue;
-
-        sysctl_cmd_parse(sysctl);
-
-        sysctl_handle_event(sysctl);
-    }
+        printf("> ");
+        shell.read_line();
+        args = shell.get_args();
+        argNums = shell.get_args_nums();
+        for (int i = 0; i < argNums; ++i)
+            printf("%s\n", args[i]);
+        shell.destroy();
+    } while (status);
 }

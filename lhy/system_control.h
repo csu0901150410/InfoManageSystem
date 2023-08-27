@@ -2,6 +2,7 @@
 #define _SYSTEM_CONTROL_H_
 
 #include "account_info.h"
+#include "lhy_shell.h"
 
 #define MAX_CMD_STRLEN 20
 
@@ -12,6 +13,7 @@ typedef enum
     kCls,// 清屏
     kExit,// 退出登录
     kQuit,// 退出系统
+    kAddUser,// 增加用户
 
     kInvalid,
 } CmdType;
@@ -24,6 +26,9 @@ typedef struct
 
     char *accountInfoFilename;// 账密信息文件路径
     CmdType cmdEvent;
+
+    Shell shell;
+    int status;
 } SystemCtl;
 
 void sysctl_init(SystemCtl *sysctl);
