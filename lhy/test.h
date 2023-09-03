@@ -14,6 +14,15 @@
 
 #include "list.h"
 
+typedef struct list_head list;
+
+// 结构体定义，其中包含一个内核链表成员
+typedef struct
+{
+    int data;
+    list list;
+} TestList;
+
 void test_list(void);
 
 #endif // _TEST_H_
