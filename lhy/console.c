@@ -11,19 +11,20 @@
  * 2023081601--实现一个简单的shell
  * 2023082801--实现一个简单的链表
  * 2023090301--移植linux内核链表
+ * 2023090901--shell介入命令行响应逻辑，初步重做系统登录功能
  * 
  */
 
 int main()
 {
-    test_list();
+    //test_list();
     
-    // SystemCtl sysctl;
-    // sysctl_init(&sysctl);
+    SystemCtl sysctl;
+    sysctl_init(&sysctl);
 
-    // sysctl_polling(&sysctl);
+    sysctl_polling(&sysctl);
 
-    // sysctl_deinit(&sysctl);
+    sysctl_deinit(&sysctl);
 
     return 0;
 }

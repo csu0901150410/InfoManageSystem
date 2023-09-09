@@ -23,6 +23,9 @@ typedef struct
 
     retShellArgs get_args;// shell获取解析的参数
     retInt get_args_nums;// shell获取参数数量
+
+    ShellArgs args;
+    int argNums;
 } Shell;
 
 void shell_init(Shell *shell);
